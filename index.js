@@ -1,9 +1,7 @@
-var events = require('event');
-
 //not draggable
-document.addEventListener('touchmove', function(e) {
+function doc_ontouchmove(e) {
   e.preventDefault();
-});
+}
 
 function ontouchmove(e) {
   var el = e.currentTarget;
@@ -16,17 +14,25 @@ function ontouchstart(e) {
   var el = e.currentTarget;
   if (el.scrollTop === 0) {
     el.scrollTop = 1;
-  } else if (el.scrollHeight == el.scrollTop + el.offsetHeight) {
+  } else if (el.scrollHeight === el.scrollTop + el.offsetHeight) {
     el.scrollTop = el.scrollTop - 1;
   }
 }
 
-module.exports = function (el) {
-  events.bind(el, 'touchmove', ontouchmove);
-  events.bind(el, 'touchstart', ontouchstart);
+exports.bind = function (el) {
+  el.addEventListener('touchmove', ontouchmove);
+  el.addEventListener('touchstart', ontouchstart);
 }
 
 exports.unbind = function (el) {
-  events.unbind(el, 'touchmove', ontouchmove);
-  events.unbind(el, 'touchstart', ontouchstart);
+  el.removeEventListener('touchmove', ontouchmove);
+  el.removeEventListener('touchstart', ontouchstart);
+}
+
+exports.setup = function () {
+  document.addEventListener('touchmove', doc_ontouchmove);
+}
+
+exports.cleanup = function () {
+  document.removeEventListener('touchmove', doc_ontouchmove);
 }

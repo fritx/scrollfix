@@ -12,7 +12,9 @@ Registed events are automatically removed when element removed.
 ```js
 var fix = require('scrollfix');
 var el = document.querySelector('.scrollable');
-fix(el);
+
+fix.setup();
+fix.bind(el);
 ```
 
 Set child element with css `min-height: 100%;` to force scroll.
